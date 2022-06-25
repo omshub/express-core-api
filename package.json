@@ -1,7 +1,7 @@
 {
   "name": "express-core-api",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "src/server.ts",
   "scripts": {
     "build": "tsc -p tsconfig.prod.json",
     "start:dev": "nodemon",
@@ -12,13 +12,25 @@
     "lint": "eslint .",
     "lint:fix": "prettier --write .",
     "prepare": "husky install",
-    "precommit": "yarn lint-staged"
+    "precommit": "yarn lint-staged",
+    "db": "ts-node -r dotenv/config ./node_modules/knex/bin/cli.js --cwd ./db",
+    "seed:make": "yarn db seed:make",
+    "seed:run": "yarn db seed:run",
+    "mig:make": "yarn db migrate:make",
+    "mig:up": "yarn db migrate:up",
+    "mig:down": "yarn db migrate:down",
+    "mig:latest": "yarn db migrate:latest",
+    "mig:rollback": "yarn db migrate:rollback",
+    "mig:rollbackAll": "yarn mig:rollback --all",
+    "mig:list": "yarn db migrate:list"
   },
   "dependencies": {
     "dayjs": "^1.11.3",
     "dotenv-safe": "^8.2.0",
     "express": "^4.18.1",
+    "knex": "^2.1.0",
     "lodash": "^4.17.21",
+    "pg": "^8.7.3",
     "pino": "^8.1.0",
     "pino-pretty": "^8.1.0"
   },
@@ -28,6 +40,7 @@
     "@types/jest": "^28.1.3",
     "@types/lodash": "^4.14.182",
     "@types/node": "^18.0.0",
+    "@types/pg": "^8.6.5",
     "@types/pino": "^7.0.5",
     "@typescript-eslint/eslint-plugin": "^5.29.0",
     "@typescript-eslint/parser": "^5.29.0",
