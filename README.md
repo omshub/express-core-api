@@ -14,7 +14,11 @@ Required dependencies are as follows:
 - [Yarn](https://yarnpkg.com) package manager
 - [Knex.js](https://knexjs.org)
 
-### Installation
+### Setup and Installation
+
+Before proceeding, ensure that you have locally set environment variables in the the (`.gitignore`d) file `/.env`. See `/.env.example` for details.
+
+To install dependencies, run the following command from the terminal:
 
 ```bash
 $ yarn install
