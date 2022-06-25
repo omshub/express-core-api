@@ -1,5 +1,16 @@
 import { Knex } from 'knex';
 import { tableNames, canonicalFields, foreignKeys, actions } from '../data/tableData';
+import {
+  courseSemesterData,
+  degreeProgramData,
+  departmentData,
+  gradeData,
+  highestEducationLevelData,
+  languageData,
+  previousDegreeSubjectData,
+  specializationData,
+  userRoleData,
+} from '../data/seedData';
 
 const {
   COURSE,
@@ -318,6 +329,42 @@ export const seed = async (knex: Knex): Promise<void> => {
     });
 
     // seed static data
+
+    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+    let data: any[];
+
+    data = courseSemesterData.map(async ({ code, name, term }) => knex(COURSE_SEMESTER).insert({ code, name, term }));
+    await Promise.all(data);
+
+    data = degreeProgramData.map(async ({ code, name, url }) => knex(DEGREE_PROGRAM).insert({ code, name, url }));
+    await Promise.all(data);
+
+    data = departmentData.map(async ({ code, name }) => knex(DEPARTMENT).insert({ code, name }));
+    await Promise.all(data);
+
+    data = gradeData.map(async ({ code, name }) => knex(GRADE).insert({ code, name }));
+    await Promise.all(data);
+
+    data = highestEducationLevelData.map(async ({ code, name }) =>
+      knex(HIGHEST_EDUCATION_LEVEL).insert({ code, name })
+    );
+    await Promise.all(data);
+
+    data = languageData.map(async ({ code, name }) => knex(LANGUAGE).insert({ code, name }));
+    await Promise.all(data);
+
+    data = previousDegreeSubjectData.map(async ({ code, name }) =>
+      knex(PREVIOUS_DEGREE_SUBJECT).insert({ code, name })
+    );
+    await Promise.all(data);
+
+    data = specializationData.map(async ({ code, name }) => knex(SPECIALIZATION).insert({ code, name }));
+    await Promise.all(data);
+
+    data = userRoleData.map(async ({ code, name }) => knex(USER_ROLE).insert({ code, name }));
+    await Promise.all(data);
+
+    // TODO: course, course_alias, degree_program_specialization, course_review_data
   }
 };
 
