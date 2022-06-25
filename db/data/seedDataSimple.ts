@@ -83,7 +83,7 @@ export const previousDegreeSubjectData: PreviousDegreeSubjectData[] = [
   { code: 'med', name: 'Medicine or Premed' },
   { code: 'mis', name: 'Management Information Systems' },
   { code: 'math', name: 'Mathematics' },
-  { code: 'sci', name: 'Natural Sciences (Biology, Chemistry, etc.)' },
+  { code: 'nat_sci', name: 'Natural Sciences (Biology, Chemistry, etc.)' },
   { code: 'stats', name: 'Statistics' },
   { code: 'or', name: 'Operations Research' },
   { code: 'phil', name: 'Philosophy' },
