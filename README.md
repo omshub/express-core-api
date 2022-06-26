@@ -10,10 +10,15 @@ Backend services for OMSHub project.
 
 Required dependencies are as follows:
 
-- Node.js runtime v.14+
-- Yarn package manager
+- [Node.js](https://nodejs.org) runtime (v.14+)
+- [Yarn](https://yarnpkg.com) package manager
+- [Knex.js](https://knexjs.org)
 
-### Installation
+### Setup and Installation
+
+Before proceeding, ensure that you have locally set environment variables in the the (`.gitignore`d) file `/.env`. See `/.env.example` for details.
+
+To install dependencies, run the following command from the terminal:
 
 ```bash
 $ yarn install
@@ -44,6 +49,33 @@ $ yarn test:watch
 
 # coverage
 $ yarn test:cov
+```
+
+#### Database management
+
+**_N.B._** See `/db/knexfile.ts` for configuration details.
+
+```bash
+# seed the database (dev environment only)
+$ yarn seed:run
+
+# create a new migration
+$ yarn mig:make <new-migration-filename>
+
+# migrate up from current
+$ yarn mig:up <current-migration-filename>
+
+# migrate down from current
+$ yarn mig:down <current-migration-filename>
+
+# migrate up to latest
+$ yarn mig:latest
+
+# rollback last batch of migrations
+$ yarn mig:rollback
+
+# rollback to base migration
+$ yarn mig:rollbackAll
 ```
 
 ### Commit messages
