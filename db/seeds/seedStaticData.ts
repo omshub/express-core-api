@@ -12,7 +12,12 @@ import {
   specializationData,
   userRoleData,
 } from '../data/seedDataSimple';
-import { courseAliasDataRaw, courseDataRaw, degreeProgramSpecializationDataRaw } from '../data/seedDataComplex';
+import {
+  courseAliasDataRaw,
+  courseDataRaw,
+  degreeProgramSpecializationDataRaw,
+  legacyCourseReviewDataRaw,
+} from '../data/seedDataComplex';
 
 const {
   COURSE,
@@ -419,7 +424,42 @@ export const seed = async (knex: Knex): Promise<void> => {
   );
   await Promise.all(degreeProgramSpecializationData);
 
-  // TODO: degree_program_specialization, course_review_data
+  const legacyCourseReviewData = legacyCourseReviewDataRaw.map(
+    async ({
+      reviewDate,
+      departmentCode,
+      courseNumber,
+      courseYear,
+      semesterTerm,
+      overall,
+      difficulty,
+      workload,
+      body,
+    }) =>
+      knex.schema.raw(
+        `INSERT INTO ${COURSE_REVIEW}
+        (review_date, is_legacy, course_id, course_year, course_semester_id, overall, difficulty, workload, body)
+        VALUES
+        (
+          ${reviewDate}
+          , true
+          , (
+              SELECT ${ID}
+                FROM ${COURSE}
+                WHERE course_number = '${courseNumber}'
+                  AND ${DEPARTMENT_ID} = (SELECT ${ID} FROM ${DEPARTMENT} WHERE code = '${departmentCode}' LIMIT 1)
+                LIMIT 1
+            )
+          , ${courseYear}
+          , (SELECT ${ID} FROM ${COURSE_SEMESTER} WHERE term = ${semesterTerm} LIMIT 1)
+          , ${overall}
+          , ${difficulty}
+          , ${workload}
+          , $$${body}$$
+        )`
+      )
+  );
+  await Promise.all(legacyCourseReviewData);
 
   log.info('Seeded database successfully!');
 };
