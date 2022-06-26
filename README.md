@@ -78,6 +78,32 @@ $ yarn mig:rollback
 $ yarn mig:rollbackAll
 ```
 
+### (Optional) Local Development Using Docker + VS Code
+
+**IMPORTANT**: As before, ensure that you have locally set environment variables in the the (`.gitignore`d) file `/.env`. See `/.env.example` and `/.devcontainer/docker-compose.yml` (under property `environment` of service `db`) for details.
+
+#### Prerequisites
+
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+  - Windows additionally requires [WSL](https://aka.ms/wsl) (Windows Subsystem for Linux). This should be prompted during installation of Docker Desktop.
+- [VS Code](https://code.visualstudio.com/)
+
+#### Launching the Server App
+
+Pull down this repository (e.g., `git clone`, or equivalent) and create/populate file `.env` in the top-level directory accordingly (i.e., `/.env`, with environment variables populated as described in `/.env.example`). In particular, set the environment variable `NODE_ENV=dev` for purposes of local development.
+
+VS Code will automatically detect the folder `/.devcontainer` and prompt to "Reopen in Container" via popup in the bottom right of the screen; click accordingly to reopen in a container.
+
+Once the container builds, it will have installed the dependencies in `/node_modules`, as well as seed the data in the postgres database container that was built by Docker. You can access the seeded data using a postgres client (e.g., pgadmin, pgweb, Postico, etc.). For more information on the seed data, see `/db/data` (the seed script is located in `/db/seeds/seedStaticData.ts`, which is automatically run on Docker container build via command `yarn seed:run`; see `package.json` for more details).
+
+Finally, to start the server app, inside of the container, open a terminal and issue the following command to start the server:
+
+```bash
+$ yarn start:dev
+```
+
+**_N.B._** This command is configured to hot reload, i.e., server restarts automatically when it detects changes in the source code (i.e., `/src`).
+
 ### Commit messages
 
 The commit message should be structured as follows:
