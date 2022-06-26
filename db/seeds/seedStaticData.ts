@@ -12,7 +12,7 @@ import {
   specializationData,
   userRoleData,
 } from '../data/seedDataSimple';
-import { courseAliasDataRaw, courseDataRaw } from '../data/seedDataComplex';
+import { courseAliasDataRaw, courseDataRaw, degreeProgramSpecializationDataRaw } from '../data/seedDataComplex';
 
 const {
   COURSE,
@@ -403,6 +403,21 @@ export const seed = async (knex: Knex): Promise<void> => {
     )
   );
   await Promise.all(courseAliasData.map(async (aliasDataRow) => Promise.all(aliasDataRow)));
+
+  const degreeProgramSpecializationData = degreeProgramSpecializationDataRaw.map(
+    async ({ degreeProgramCode, specializationCode, degreeProgramSpecializationCode }) =>
+      knex.schema.raw(
+        `INSERT INTO ${DEGREE_PROGRAM_SPECIALIZATION}
+        (${DEGREE_PROGRAM_ID}, ${SPECIALIZATION_ID}, ${CODE})
+        VALUES
+        (
+          (SELECT ${ID} FROM ${DEGREE_PROGRAM} WHERE code = '${degreeProgramCode}')
+          , (SELECT ${ID} FROM ${SPECIALIZATION} WHERE code = '${specializationCode}')
+          , '${degreeProgramSpecializationCode}'
+        )`
+      )
+  );
+  await Promise.all(degreeProgramSpecializationData);
 
   // TODO: degree_program_specialization, course_review_data
 
